@@ -20,7 +20,7 @@
     </if>
     <else>
       <!-- results of creating demo users -->
-      @html@
+      @html;noquote@
     </else>
     </ul>
     <p>

@@ -19,7 +19,7 @@
   <td bgcolor="#99CCFF" valign=top align=right height=100%>
     <table cellspacing=0 cellpadding=4 border=0 width=100% height=100%>
     <tr><td valign=top>
-      <include src="article-list" location="@location@" title="@title@">
+      <include src="article-list" location="@location;noquote@" title="@title;noquote@">
     </td></tr></table>
     </td>
 

@@ -1,5 +1,5 @@
 <master src="master-1">
-<property name=title>@title@</property>
+<property name=title>@title;noquote@</property>
 
 <table cellspacing=0 height=100%>
  <tr bgcolor=#ffffff>

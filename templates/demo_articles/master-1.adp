@@ -31,8 +31,8 @@
         <td valign=top bgcolor=#000066>
           <font color=#ffffff>
 	    <include src="article-list" 
-              location="@location@" 
-              title="@title@"
+              location="@location;noquote@" 
+              title="@title;noquote@"
               article_link_color="#CCCCCC"
               location_color="#FFFFFF">
           </font>

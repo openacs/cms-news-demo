@@ -20,7 +20,7 @@
       </if>
       <else>
         <!-- results of creating folders and templates -->
-        @html@
+        @html;noquote@
       </else>
       </ul>
       <p>

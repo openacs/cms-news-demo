@@ -14,7 +14,7 @@
     Granting permissions to demo users...
     <ul>
       <!-- results of granting permissions to demo users -->
-      @html@
+      @html;noquote@
     </ul>
     <p>
 
