@@ -9,7 +9,6 @@
     <version name="1.4" url="http://www.arsdigita.com/acs-repository/download/apm/cms-news-demo-1.4.apm">
     <database-support>
         <database>oracle</database>
-        <database>postgresql</database>
     </database-support>
         <owner url="mailto:pihman@arsdigita.com">Michael Pih</owner>
         <summary>A demo news site built using CMS.</summary>
