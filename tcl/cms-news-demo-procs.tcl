@@ -100,8 +100,8 @@ proc publish::handle::audio { item_id args } {
     append html $extra_html
     return $html
   } else {
-    ns_log notice \
-      "WARNING: publish::handle_audio: No embed specified for audio, aborting"
+    ns_log Warning \
+      "publish::handle_audio: No embed specified for audio, aborting"
     return ""
   }
 
