@@ -5,7 +5,7 @@
 #
 # @author Michael Pih
 
-
+set user_id [User::getID]
 
 # get the user id of a cm_admin
 db_1row cm_admin "
@@ -23,7 +23,7 @@ db_1row cm_admin "
     cms_permission.permission_p(
 	module_id, user_id, 'cm_admin') = 't'
   and
-    user_id = [User::getID]
+    user_id = :user_id
 "
 
 
@@ -72,12 +72,11 @@ if { $demo_users < 3 } {
 	
 	# check if the user exists already
 	db_1row user_exists_p "
-	  select
-            count(1) as user_exists_p
-          from
-            users
-	  where
-            screen_name = :screen_name
+	  select count(1) as user_exists_p
+          from dual 
+	  where exists (
+            select 1 from users
+            where screen_name = :screen_name)
 	"
 
 	# if the user doesn't exists, create the user
@@ -86,16 +85,11 @@ if { $demo_users < 3 } {
 	    append html "<li>Creating $name... "
 
 	    set password $screen_name
-	    set email "${screen_name}@host.com"
+	    set email "${screen_name}@example.com"
 	    
-	    set user_id [ad_user_new $email $name $name $password "" ""]
+	    auth::create_user -email $email -first_names Demo -last_name $name -password $password -screen_name $screen_name
 
-	    db_dml update_users "
-	    update users
-              set screen_name = :screen_name
-              where user_id = :user_id"
-
-	    append html "created.<br>"
+	    append html "created Demo $name &lt;$email&gt; password $password.<br>"
 
 	} else {
 	    append html "<li>$name already exists.<br>"
