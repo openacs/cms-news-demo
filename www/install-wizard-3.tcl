@@ -7,12 +7,10 @@
 
 
 
-set db [template::get_db_handle]
-
 # get the user id of a cm_admin
-template::query cm_admin onevalue "
+db_1row cm_admin "
   select
-    distinct user_id
+    distinct user_id as cm_admin
   from
     users u, cm_modules m
   where 
@@ -26,27 +24,24 @@ template::query cm_admin onevalue "
 	module_id, user_id, 'cm_admin') = 't'
   and
     user_id = [User::getID]
-" -db $db
+"
 
 
 # check if author, editor, and publisher users have been created
-template::query demo_users onevalue "
+db_1row demo_users "
   select
-    count(1)
+    count(1) as demo_users
   from
     users
   where
     screen_name in ('author','editor','publisher')
-" -db $db
+"
 
 if { $demo_users < 3 } {
     set demo_users_p f
 } else {
     set demo_users_p t
 }
-
-
-template::release_db_handle
 
 if { [template::util::is_nil cm_admin] } {
     template::forward install-wizard
@@ -60,11 +55,6 @@ if { [template::util::is_nil cm_admin] } {
 set creation_ip [ns_conn peeraddr]
 set user_id     $cm_admin
 
-
-
-
-
-
 # register demo users if not already registered: 
 #   author, editor, publisher
 
@@ -72,8 +62,7 @@ set html ""
 
 if { $demo_users < 3 } {
 
-    set db [template::begin_db_transaction]
-
+    db_transaction {
     set demo_user_list \
 	    { {Author author} {Editor editor} {Publisher publisher} }
 
@@ -82,14 +71,14 @@ if { $demo_users < 3 } {
 	set screen_name [lindex $demo_user 1]
 	
 	# check if the user exists already
-	template::query user_exists_p onevalue "
+	db_1row user_exists_p "
 	  select
-            count(1)
+            count(1) as user_exists_p
           from
             users
 	  where
             screen_name = :screen_name
-	" -db $db
+	"
 
 	# if the user doesn't exists, create the user
 	if { $user_exists_p == 0 } {
@@ -101,7 +90,7 @@ if { $demo_users < 3 } {
 	    
 	    set user_id [ad_user_new $email $name $name $password "" ""]
 
-	    ns_ora dml $db "
+	    db_dml update_users "
 	    update users
               set screen_name = :screen_name
               where user_id = :user_id"
@@ -113,7 +102,7 @@ if { $demo_users < 3 } {
 	}
     }
 
-    template::end_db_transaction
+    }
 }
 
 

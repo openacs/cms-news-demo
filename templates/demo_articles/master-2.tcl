@@ -16,7 +16,7 @@ if { ![template::util::is_nil location] } {
 }
 
 
-template::query articles multirow "
+template::query articles articles multirow "
   select
     live_revision, location, title, name
   from
