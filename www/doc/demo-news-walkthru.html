@@ -1,0 +1,310 @@
+<html>
+<head>
+  <title>CMS News Demo Walkthru</title>
+</head>
+<body bgcolor="#FFFFFF">
+
+<h2>CMS News Demo Walkthru</h2>
+
+<a href="index.html">CMS Demo Documentation</a> : News Site Demo Walkthru
+<hr>
+
+<h4>Overview</h4>
+
+This walkthru demonstrates a typical publishing workflow for a news site using
+the Arsdigita Content Management System. 
+
+
+<h4>Prerequisites</h4>
+
+This demonstration walkthru assumes the following:
+
+<ul>
+<li>The CMS News Demo has been installed and all demo templates have been
+  edited and published according to the demo installation instructions.
+<p>
+
+<li>The following three registered CMS users exists:
+<p>
+
+<ul>
+<table cellspacing=0 cellpadding=4 border=0>
+<tr bgcolor="#6699CC"><td>
+<table cellspacing=0 cellpadding=4 border=0 width=100%>
+<tr bgcolor="#99CCFF">
+  <th align=left>User</th>
+  <th>&nbsp;</th>
+  <th align=left>Role</th>
+</tr>
+<tr bgcolor="#FFFFFF">
+  <td>Content Manager</td>
+  <td>&nbsp;</td>
+  <td>Places requests for news articles and publishes finished articles to
+     the public site</td>
+</tr>
+<tr bgcolor="#EEEEEE">
+  <td>Author</td>
+  <td>&nbsp;</td>
+  <td>Submits articles, images, and multimedia files</td>
+</tr>
+<tr bgcolor="#FFFFFF">
+  <td>Editor</td>
+  <td>&nbsp;</td>
+  <td>Edits the Author's work</td>
+</tr>
+</table>
+</td></tr>
+</table>
+</ul>
+
+
+
+<p>
+&nbsp;
+<br>
+</ul>
+
+<h4>Walkthru - Publishing a News Article</h4>
+
+<br>
+
+<ul>
+
+
+<h4> 1)  Becoming familiar with the CMS Admin UI</h4>
+
+  <ol>
+    <li>Log in to CMS as the Content Manager.
+
+    <li>Browse the Site Map:
+      <ul>
+    <li>Click on the Site Map folder.  It should contain a demo_articles 
+      folder.
+    <li>Click on demo_articles folder under the Site Map.  This folder 
+      contains an item titled "Article Index".
+    <li>Click the Article Index item to bring up a screen displaying 
+      information about "Article Index".  Notice that there are four 
+      tabbed links near the top of the page: Editing, Sub-Items, Publishing,
+      and Permissions.
+      </ul>
+
+    <li>Preview and publish a content item:
+      <ul>
+    <li>Click the "/demo_articles/index" link in the upper right corner
+      to preview the "Article Index" page in a new frame.  Close the preview
+      frame.
+    <li>Click the "Publishing" link near the top of the page to display 
+      the item's publishing information.
+    <li>Click the "Edit" link in the upper right corner of the Publishing 
+      Status box to schedule this item for publishing.
+    <li>Publish the item by changing the publishing status to "live" and 
+      hitting Submit.
+    <li>Open a new browser window and 
+      <b>$HOSTNAME:$PORT/demo_article/index.html</b> to view the 
+      published item on the public site.
+      </ul>
+
+    <li>Browse the Content Types mount point:
+      <ul>
+    <li>Click on the Content Types folder.  It should contain several folders,
+      namely, Article, Image, and Multimedia Link.
+    <li>Click on the Article folder to view information about the Article 
+      content type.  
+    <li>Notice that its attributes include Author, Location,
+      and Type.
+    <li>Notice that there are two templates listed in the 
+      Registered Templates box and one of them is the default.
+    <li>Notice that the Captioned Image and Multimedia Link content types 
+      appear in the Registered Child Relation Types box.
+      </ul>
+
+  </ol>
+
+
+<h4>2) Placing a request for news</h4>
+
+  <ol>
+    <li>Navigate to the demo_articles folder under the Site Map.
+      Notice there is the option to "Add a new Basic Item under this Folder."
+    <li>Create an empty article:
+      <ul>
+    <li>Select "Article" from the pick list and hit the "Add Item" button. 
+    <li>Select "No Content" and hit Submit.
+    <li>Fill in the Title, Description, Location, Author, and Type form 
+      fields and then submit the form.  A successful form submission will 
+      result in an item details page being displayed.
+    <li>On the item's publishing details page, click the "Create a workflow 
+      for this item" link to apply the publishing workflow to this article.
+    <li>Assign the Author to the Authoring task, Editor to the Editing
+	  task, and Publisher to the Approval of this article by selecting
+	  the appropriate name from the pick list for each task.  Fill
+	  in the Comment form field and then hit Submit.
+    <li>Add a captioned image to the Article:
+      <ul>
+        <li>Navigate to the Article's item details page and click the 
+	  "Sub-Items" link near the top of the page to navigate to the 
+	  related item details page.
+        <li>In the Child Items box, choose the Captioned Image content type
+          from the pick list and click the Add button.
+        <li>Select "No Content" and then hit Submit.
+        <li>Fill in the Title, Description, Width, and Height form fields
+          and then submit the form.
+        <li>Click the "Create a workflow for this item" in the Publishing 
+	  section of the item details page to link to apply the
+	  publishing workflow to the captioned image.
+        <li>Assign the Author to the Authoring task, Editor to the Editing
+	  task, and Publisher to the Approval of the captioned image.  Fill
+	  in the Comment form field and then hit Submit.
+      </ul>
+
+    <li>Add multimedia links to the Article:
+      <ul>
+        <li>Navigate to the item details page of the Article you created.
+        <li>In the Child Items box in the Sub-Items section, choose the 
+	  Multimedia Link content type from the pick list and click the 
+	  Add button.
+        <li>Select "No Content" under Content Creation Method and 
+	  "(Default)" for Child relation tag and then hit Submit.
+        <li>Fill in Title, Description, Type, and Caption form fields and 
+	  hit Submit.
+        <li>Click the "Create a workflow for this item" link in the Publishing
+	  section of the item details page to apply the
+	  publishing workflow to the multimedia link.
+        <li>Assign the Author to the Authoring task, Editor to the Editing
+	  task, and Publisher to the Approval of the multimedia link.  Fill
+	  in the Comment form field and then hit Submit.
+        <li>Repeat these steps to add more multimedia links.
+      </ul>
+
+      </ul>
+
+    <li>Sign out.
+  </ol>
+
+
+
+
+<h4>3) Submitting an article</h4>
+
+  <ol>
+    <li>Log in to CMS as the Author.
+    <li>Notice that there are three (or more) items listed in the Authoring 
+      stage in the "My Tasks" box, namely an Article, Captioned Image, 
+      and one or more Multimedia Links.
+
+    <li>Upload an Article:
+      <ul>
+    <li>Click the title of the Article to navigate to the item details page.
+    <li>In the Revisions box under the Editing section, click the 
+      "Text Entry" link to add a revision to the Article.
+    <li>In the Content form section, either type or paste some text into
+      the form.  Then submit the form.
+    <li>Go back to the "My Tasks" folder.
+    <li>Click the Finish link for the Article.  Fill in the comment field and
+      hit Submit.  Notice the Authoring task for the Article no longer 
+      appears in the "My Tasks" box.
+      </ul>
+
+
+    <li>Upload a Captioned Image:
+      <ul>
+    <li>Now click the title of the Captioned Image to navigate to its item
+      details page.
+    <li>In the Revisions box under the "Editing" section of the item
+      details page, click the "File Upload" link to add a
+      revision to the Captioned Image.
+    <li>Upload an image using the "Upload Content" form field then hit
+      Submit.
+    <li>Click the Finish link for this Captioned Image under the Workflow
+      section of the item details page.  Fill in the comment field and hit
+      Submit.  Notice that the Authoring task for the Captioned Image 
+      no longer appears in the "My Tasks" box.
+      </ul>
+
+
+    <li>Upload Multimedia Links:
+      <ul>
+    <li>The steps for uploading a Captioned Image can be applied to uploading
+      Multimedia Links.  Upload as many multimedia links as you created.
+      </ul>
+
+    <li>Sign out.
+  </ol>
+
+
+
+
+<h4>4) Editing the article</h4>
+
+  <ol>
+    <li>Log in to CMS as the Editor.
+    <li>Notice that there are three (or more) items listed in the Editing
+      stage in the "My Tasks" box, namely an Article, Captioned Image, 
+      and one or more Multimedia Links.  Notice also, that the Editor can
+      Approve or Reject an item in the Editing stage.
+    <li>Browse the latest content of the Article, Captioned Image, and 
+      Multimedia Links by navigating to their respective item details pages
+      and either clicking on a revision number in the Revisions box or 
+      clicking the preview link in the upper right hand corner of the page.  
+      From the item
+      details page, you can edit an item either by clicking the Edit link in 
+      the upper right corner of the Attributes box, or by clicking the "File
+      Upload" or "Text Entry" links in the Revisions box.  Make one or more
+      changes to the Article.
+    <li>Navigate to the "My Tasks" page and approve all the items that the
+      Author created.  Notice that the approved items no longer appear in the
+      "My Tasks" box.
+    <li>Sign out.    
+  </ol>
+
+
+
+
+<h4>5) Publishing the article to the live site</h4>
+
+  <ol>
+    <li>Log in to CMS as the Content Manager.
+    <li>Notice that there are three (or more) items listed in the Approval
+      stage in the "My Tasks" box, namely an Article, Captioned Image, 
+      and one or more Multimedia Links.  Notice also, that the Approver can
+      Approve or Reject an item in the Approval stage.
+    <li>Browse the latest content of the Article, Captioned Image, and 
+      Multimedia Links by navigating to their respective item details pages
+      and either clicking on a revision number in the Revisions box or 
+      clicking the preview link in the upper right hand corner of the page.
+
+    <li>Publish the Article, starting with the child items (Captioned Image 
+      and Multimedia Links).  The following steps apply to publishing any
+      items:
+      <ul>
+    <li>On the items details page, make the latest revision ready to go live
+      by clicking the "Make this revision live" link in the Revisions box
+      next to the latest revision (the one with the highest revision number).
+    <li>Click the "Edit" link in the upper right hand corner of the 
+      "Publishing Status" box.  Choose "live" and hit Submit.  The item has
+      now been published.
+      </ul>
+
+   <li>Re-publish the Article Index page by editing the publish status of
+     that item.
+   <li>In a new browser window, visit <b>$HOSTNAME:$PORT/demo_articles/</b>
+     to view the published Article on the live site.
+  </ol>
+
+<h4>6) Changing the look of the public site with templates</h4> 
+
+  <ol>
+    <li>Navigate to the Article content type details page.
+    <li>Switch templates for the Article content type by clicking the "Make 
+      this the default" link in the "Registered Templates" box.
+    <li>Navigate to the Article item details page and click the preview link 
+      in the upper right hand corner.  Notice the new look of the Article.
+      Re-publish the Article to cause the templating changes to take effect.
+  </ol>
+
+</ul>
+
+<p>
+
+</body>
+</html>

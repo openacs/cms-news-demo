@@ -1,0 +1,98 @@
+<html>
+<head>
+  <title>Installing the CMS News Demo</title>
+</head>
+<body bgcolor="#FFFFFF">
+
+<h2>Installing the CMS News Demo</h2>
+
+<a href="index.html">CMS Demo Documentation</a> : 
+News Site Demo Installation Guide
+<hr>
+
+<p>
+This document contains instructions on installing the News Site demo for the
+Arsdigita Content Management System.
+<p>
+
+
+
+
+
+
+
+
+<h4>Where to get the CMS News Site Demo</h4>
+
+There are two options for obtaining the CMS News Demo:
+
+<ol>
+
+<li>Download a tarball from 
+  <a href="http://cms.arsdigita.com/download.html">cms.arsdigita.com</a>.
+<p>
+
+<li>Checkout the latest version from the CVS repository:
+  <ul><tt>cvs -d :ext:ls.arsdigita.com:/cvsweb/ co cms-news-demo</tt></ul>
+<p>
+
+</ol>
+
+
+<h4>Prerequisites</h4>
+
+<ol>
+
+<li> The CMS 4.1 package is mounted onto ACS 4.1.<p>
+  Packages can be mounted in $YOURSERVER/admin/site-map/.  You must be
+  logged in as a site-wide administrator to mount a package.
+<p>
+
+<li> The CMS News Site Demo 1.2 package is mounted onto ACS 4.1.<p>
+  Packages can be mounted in $YOURSERVER/admin/site-map/.  You must be
+  logged in as a site-wide administrator to mount a package.
+<p>
+
+<li> The CMS News Site Demo 1.2 data model is loaded.<p>
+  If the data model wasn't loaded when installing ACS 4.1, then you can
+  load it manually:<p>
+  <ul><tt>cd $CMS_NEWS_DEMO_ROOT/sql<br>
+          sqlplus $DB_USER/$DB_PASSWD < cms-news-demo-create.sql</tt></ul>
+<p>
+
+
+<p>
+
+<li> You are a registered user and have CMS Administrative privileges 
+  on the entire Content Management System.<p>
+  If no user is registered to CMS with Administrative privileges, then the
+  next user to register under CMS will automatically be granted Administrative 
+  privileges on the entire CMS.
+<p>
+
+</ol>
+
+<p>
+
+
+
+
+<h4>Installation Instructions</h4>
+
+<ol>
+
+<li>Browse to $YOUR_SERVER/cms-news-demo/install-wizard to start the 
+  CMS News Demo Installation Wizard.  Running the install wizard will
+  register demo users and create and publish demo folders and templates.
+<p>
+
+<li>That's it!
+<p>
+
+</ol>
+
+<p>
+
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<html>
+
+<head>
+  <title>CMS News Site Planning Guide</title>
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<h2>CMS News Site Planning Guide</h2>
+
+<a href="index.html">CMS Demo Documentation</a> : News Site Demo Install Guide
+<hr>
+
+
+<p>
+This document defines some basic user roles and explains the basic steps in 
+developing a typical news site using the Arsdigita Content Management System.
+<p>
+
+
+
+
+<h4>User Roles</h4>
+
+<ul>
+<table>
+<tr>
+  <th align=left>Information Architect</th>
+  <td>&nbsp;</td>
+  <td>Designs and develops the data model for generating dynamic content.</td>
+</tr>
+<tr>
+  <th align=left>Site Administrator</th>
+  <td>&nbsp;</td>
+  <td>Has administrative permissions on the entire CMS.  Can create new roles
+    and assign permissions to different CMS users.</td>
+</tr>
+<tr>
+  <th align=left>Author</th>
+  <td>&nbsp;</td>
+  <td>Writes new content to be uploaded into CMS.</td>
+</tr>
+<tr>
+  <th align=left>Photographer</th>
+  <td>&nbsp;</td>
+  <td>A specialized Author, responsible for generating image and multimedia
+    content.</td>
+</tr>
+<tr>
+  <th align=left>Editor</th>
+  <td>&nbsp;</td>
+  <td>Edits and approves the work of the Author (and Photographer) roles.</td>
+</tr>
+<tr>
+  <th align=left>Publisher</th>
+  <td>&nbsp;</td>
+  <td>Places a request for new content by assigning the Author and Editor to 
+    create and edit content.  Chooses a template to display dynamic content
+    on the public site.  Approves content before publishing it to the live
+    site.</td>
+</tr>
+<tr>
+  <th align=left>Template Developer</th>
+  <td>&nbsp;</td>
+  <td>Designs and develops the templates for generating and displaying
+    dynamic content.  Responsibilities include page layout, web graphics, 
+    and overall site flow.</td>
+</tr>
+</table>
+</ul>
+
+
+<h4>Designing a News Site</h4>
+
+<ul>
+ <li>Determine the types of content that the site will contain. A news
+     site usually incorporates Articles, Images, and Multimedia Files into its
+     repository.
+ <li>Determine the roles necessary to generate content (a news article page) 
+   from scratch, that is, designate Authors, Editors,
+     Publishers, Template Developers, etc.
+ <li>Design the overall site flow.
+ <li>Design templates for displaying the content on the public site.
+ <li>Design custom forms (templates) for generating the content.
+ <li>Create data model for the content types. The data model
+     should include how the different content types are related and how the
+     content will be inserted into the database.
+</ul>
+
+<h4>Writing the Public Pages</h4>
+
+<ul>
+ <li>Write the custom forms (templates) for generating content.
+ <li>Write the templates to display dynamic content on the public pages.
+</ul>
+
+<h4>Content Management</h4>
+
+<ul>
+  <li>Publisher chooses a template to display the dynamic content on the 
+    public site.
+  <li>Publisher creates empty content item(s) (articles, images, multimedia 
+    files) that eventually will be revised by the Author and Editor.
+  <li>Publisher places a request for new content by assigning the Author to
+    create content via the workflow engine.
+  <li>The Author writes and uploads articles. The Photographer uploads
+    images and multimedia files.
+  <li>The Editor approves or rejects the articles and images that the 
+    Author and Photographer have uploaded.
+  <li>The Publisher approves or rejects the final work before publishing 
+    the content to the file system and to the live site.
+</ul>
+
+
+<p>
+
+</body>
+</html>
