@@ -7,10 +7,8 @@
 
 set html ""
 
-set db [template::get_db_handle]
-
 # get the user id of a cm_admin
-template::query cm_admin onevalue "
+set cm_admin [db_string cm_admin "
   select
     distinct user_id
   from
@@ -26,10 +24,7 @@ template::query cm_admin onevalue "
 	module_id, user_id, 'cm_admin') = 't'
   and
     user_id = [User::getID]
-" -db $db
-
-
-template::release_db_handle
+" -default ""]
 
 if { [template::util::is_nil cm_admin] } {
     template::forward install-wizard
@@ -44,48 +39,43 @@ set creation_ip [ns_conn peeraddr]
 set user_id     $cm_admin
 
 
-
-
-
 # grant permissions to demo users
 
-set db [template::begin_db_transaction]
+db_transaction {
 
 # some root folders
-template::query sitemap onevalue "
-  select content_item.get_root_folder from dual
-" -db $db
+db_1row sitemap "
+  select content_item.get_root_folder as sitemap from dual
+"
 
-template::query templates onevalue "
-  select content_template.get_root_folder from dual
-" -db $db
+db_1row templates "
+  select content_template.get_root_folder as templates from dual
+"
 
 # some user ID's
-template::query author onevalue "
-  select user_id from users where screen_name = 'author'
-" -db $db
+db_1row author "
+  select user_id as author from users where screen_name = 'author'
+"
 
-template::query editor onevalue "
-  select user_id from users where screen_name = 'editor'
-" -db $db
+db_1row editor "
+  select user_id as editor from users where screen_name = 'editor'
+"
 
-template::query publisher onevalue "
-  select user_id from users where screen_name = 'publisher'
-" -db $db
-
+db_1row publisher "
+  select user_id as publisher from users where screen_name = 'publisher'
+"
 
 # some folder/module ID's
-template::query demo_articles onevalue "
-  select content_item.get_id( '/demo_articles' ) from dual
-" -db $db
+db_1row demo_articles "
+  select content_item.get_id( '/demo_articles' ) as demo_articles from dual
+"
 
-template::query other_modules onelist "
+set other_modules [db_list other_modules "
   select module_id from cm_modules where key ^= 'sitemap'
-" -db $db
-
+"]
 
 # grant permissions
-ns_ora dml $db "
+db_dml grant_perms "
   begin
   cms_permission.grant_permission (
       item_id      => :sitemap,
@@ -145,7 +135,7 @@ append html "<li>Granted cm_item_relate, cm_item_workflow to publisher on sitema
 
 
 foreach module_id $other_modules {
-    ns_ora dml $db "
+    db_dml grant1 "
       begin
       cms_permission.grant_permission (
           item_id      => :module_id,
@@ -160,7 +150,7 @@ foreach module_id $other_modules {
 append html "<li>Granted cm_examine to author on all other modules."
 
 foreach module_id $other_modules {
-    ns_ora dml $db "
+    db_dml grant2 "
       begin
       cms_permission.grant_permission (
           item_id      => :module_id,
@@ -175,7 +165,7 @@ foreach module_id $other_modules {
 append html "<li>Granted cm_examine to editor on all other modules."
 
 foreach module_id $other_modules {
-    ns_ora dml $db "
+    db_dml grant3 "
       begin
       cms_permission.grant_permission (
           item_id      => :module_id,
@@ -189,6 +179,5 @@ foreach module_id $other_modules {
 
 append html "<li>Granted cm_write to publisher on all other modules."
 
-template::end_db_transaction
-
+}
 

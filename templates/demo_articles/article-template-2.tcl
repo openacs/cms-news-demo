@@ -1,7 +1,7 @@
 content::get_content
 template::util::array_to_vars content
 
-template::query links multirow "
+template::query links links multirow "
   select
     relation_tag
   from

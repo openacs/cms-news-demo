@@ -11,11 +11,9 @@
 #  by checking if the demo_articles folder exists under the
 #  templates root and the sitemap root
 
-set db [template::get_db_handle]
-
-template::query demo_folders onevalue "
+db_1row demo_folders {
   select
-    count(1)
+    count(1) as demo_folders
   from
     cr_items
   where
@@ -26,7 +24,7 @@ template::query demo_folders onevalue "
     name = 'demo_articles'
   and
     content_type = 'content_folder'
-" -db $db
+}
 
 if { $demo_folders != 2 } {
     set demo_folders_p f
@@ -40,9 +38,9 @@ if { $demo_folders != 2 } {
 #   of live templates in the /demo_articles folder under the
 #   templates mount point
 
-template::query published_templates onevalue "
+db_1row published_templates {
   select
-    count(1)
+    count(1) as published_templates
   from
     cr_items
   where
@@ -62,7 +60,7 @@ template::query published_templates onevalue "
                     name = 'demo_articles'
                   and
                     content_type = 'content_folder' )
-" -db $db
+}
 
 if { $published_templates < 8 } {
     set published_templates_p f
@@ -71,10 +69,9 @@ if { $published_templates < 8 } {
 }
 
 
-
 # get the user id of a cm_admin
 
-template::query cm_admin onevalue "
+set cm_admin [db_string cm_admin "
   select
     distinct user_id
   from
@@ -90,9 +87,7 @@ template::query cm_admin onevalue "
 	module_id, user_id, 'cm_admin') = 't'
   and
     user_id = [User::getID]
-" -db $db
-
-template::release_db_handle
+" -default ""]
 
 if { [template::util::is_nil cm_admin] } {
     template::forward install-wizard
@@ -115,22 +110,21 @@ if { $demo_folders != 2 } {
     
     set html ""
     
-    set db [template::begin_db_transaction]
+    db_transaction {
 
     # some root folders
-    template::query sitemap onevalue "
-      select content_item.get_root_folder from dual
-    " -db $db
+    db_1row sitemap "
+      select content_item.get_root_folder as sitemap from dual
+    "
 
-    template::query templates onevalue "
-      select content_template.get_root_folder from dual
-    " -db $db
-
+    db_1row templates "
+      select content_template.get_root_folder as templates from dual
+    "
 
     # create demo_articles folder
-    ns_ora exec_plsql_bind $db "
+    set folder_id [db_exec_plsql demo_articles_folder_new "
       begin
-      :folder_id := content_folder.new (
+      :1 := content_folder.new (
           name          => 'demo_articles',
           label         => 'Demo Articles',
           description   => 'Articles for publication',
@@ -139,12 +133,12 @@ if { $demo_folders != 2 } {
           parent_id     => :sitemap
       );
       end;
-    " folder_id
+    "]
 
     append html "<li>Created /demo_articles folder under the sitemap."
 
     # register content types to demo_articles folder
-    ns_ora dml $db "
+    db_dml register_content_types "
       begin
       delete from cr_folder_type_map
         where folder_id = :folder_id;
@@ -163,9 +157,9 @@ if { $demo_folders != 2 } {
     append html "<li>Registered content types to /demo_articles."
 
     # create article index
-    ns_ora exec_plsql_bind $db "
+    set item_id [db_exec_plsql article_index_new "
       begin
-      :item_id := content_item.new (
+      :1 := content_item.new (
           name          => 'index',
           parent_id     => :folder_id,
           content_type  => 'content_revision',
@@ -176,14 +170,14 @@ if { $demo_folders != 2 } {
           creation_ip   => :creation_ip
       );
       end;
-    " item_id
+    "]
 
     append html "<li>Created /demo_articles/index content item."
 
     # create demo templates folder and templates
-    ns_ora exec_plsql_bind $db "
+    set folder_id [db_exec_plsql folder_new "
       begin
-      :folder_id := content_folder.new (
+      :1 := content_folder.new (
           name          => 'demo_articles',
           label         => 'Demo Article Templates',
           description   => 'Templates for demo articles and links',
@@ -192,12 +186,12 @@ if { $demo_folders != 2 } {
           parent_id     => :templates
       );
       end;
-    " folder_id
+    "]
 
     append html "<li>Created /demo_articles folder under the templates mount point."
 
     # register content type to the folder
-    ns_ora dml $db "
+    db_dml register_content_type "
       begin
       content_folder.register_content_type (
           folder_id    => :folder_id,
@@ -208,19 +202,19 @@ if { $demo_folders != 2 } {
     append html "<li>Registered templates to the /demo_articles folder."
 
     # create index template
-    ns_ora exec_plsql_bind $db "
+    set template_id [db_exec_plsql template_new "
       begin
-      :template_id := content_template.new (
+      :1 := content_template.new (
           name          => 'index',
           parent_id     => :folder_id,
           creation_user => :user_id,
           creation_ip   => :creation_ip
       );
       end;
-    " template_id
+    "]
 
     # make the index template an adp file
-    ns_ora dml $db "
+    db_dml index_template_new "
       update cr_revisions
         set mime_type = 'text/adp'
         where item_id = :template_id"
@@ -228,7 +222,7 @@ if { $demo_folders != 2 } {
     append html "<li>Created /demo_articles/index template for articles index page."
 
     # register template index template to content_revision and index page
-    ns_ora dml $db "
+    db_dml register_template_index "
       begin
       content_type.register_template (
           content_type => 'content_revision',
@@ -248,34 +242,34 @@ if { $demo_folders != 2 } {
 
 
     # create more templates
-    ns_ora exec_plsql_bind $db "
+    set template_id [db_exec_plsql more_templates "
       begin
-      :template_id := content_template.new (
+      :1 := content_template.new (
           name          => 'master-1',
           parent_id     => :folder_id,
           creation_user => :user_id,
           creation_ip   => :creation_ip
       );
       end;
-    " template_id
+    "]
 
     append html "<li>Created /demo_articles/master-1 master template."
 
-    ns_ora exec_plsql_bind $db "
+    set template_id [db_exec_plsql article_template_1 "
       begin
-      :template_id := content_template.new (
+      :1 := content_template.new (
           name          => 'article-template-1',
           parent_id     => :folder_id,
           creation_user => :user_id,
           creation_ip   => :creation_ip
       );
       end;
-    " template_id
+    "]
 
     append html "<li>Created /demo_articles/article-template-1 article template."
 
     # register template to articles
-    ns_ora dml $db "
+    db_dml register_article_template_1 "
       begin
       content_type.register_template (
           content_type => 'cr_demo_article',
@@ -288,33 +282,33 @@ if { $demo_folders != 2 } {
     append html "<li>Registered the article template as the default for articles."
 
     # more article templates
-    ns_ora exec_plsql_bind $db "
+    set template_id [db_exec_plsql master_2 "
       begin
-      :template_id := content_template.new (
+      :1 := content_template.new (
           name          => 'master-2',
           parent_id     => :folder_id,
           creation_user => :user_id,
           creation_ip   => :creation_ip
       );
       end;
-    " template_id
+    "]
 
     append html "<li>Createed /demo_articles/master-2 master template."
 
-    ns_ora exec_plsql_bind $db "
+    set template_id [db_exec_plsql article_template_2 "
       begin
-      :template_id := content_template.new (
+      :1 := content_template.new (
           name          => 'article-template-2',
           parent_id     => :folder_id,
           creation_user => :user_id,
           creation_ip   => :creation_ip
       );
       end;
-    " template_id
+    "]
 
     append html "<li>Created /demo_articles/article-template-2 article template."
 
-    ns_ora dml $db "
+    db_dml register_article_template_2 "
       begin
       content_type.register_template (
           content_type => 'cr_demo_article',
@@ -327,35 +321,35 @@ if { $demo_folders != 2 } {
     append html "<li>Registered the 2nd article template to articles."
 
     # article list template
-    ns_ora exec_plsql_bind $db "
+    set template_id [db_exec_plsql article_list "
       begin
-      :template_id := content_template.new (
+      :1 := content_template.new (
           name          => 'article-list',
           parent_id     => :folder_id,
           creation_user => :user_id,
           creation_ip   => :creation_ip
       );
       end;
-    " template_id
+    "]
 
     append html "<li>Created /demo_articles/article-list template for listing articles."
 
     # multimedia link template
-    ns_ora exec_plsql_bind $db "
+    set template_id [db_exec_plsql article_link_template "
       begin
-      :template_id := content_template.new (
+      :1 := content_template.new (
           name          => 'article-link-template',
           parent_id     => :folder_id,
           creation_user => :user_id,
           creation_ip   => :creation_ip
       );
       end;
-    " template_id
+    "]
 
     append html "<li>Created /demo_articles/article-link-template."
 
 
-    ns_ora dml $db "
+    db_dml register_article_link_template "
       begin
       content_type.register_template (
           content_type => 'cr_demo_link',
@@ -369,20 +363,20 @@ if { $demo_folders != 2 } {
     to the cr_demo_link content type."
 
     # captioned image template
-    ns_ora exec_plsql_bind $db "
+    set template_id [db_exec_plsql cap_image_template "
       begin
-      :template_id := content_template.new (
+      :1 := content_template.new (
           name          => 'captioned-image-template',
           parent_id     => :folder_id,
           creation_user => :user_id,
           creation_ip   => :creation_ip
       );
       end;
-    " template_id
+    "]
 
     append html "<li>Created /demo_articles/captioned-image-template."
 
-    ns_ora dml $db "
+    db_dml register_cap_image_template "
       begin
       content_type.register_template (
           content_type => 'cr_demo_article_image',
@@ -396,20 +390,20 @@ if { $demo_folders != 2 } {
       to the cr_demo_article_image content type."
 
     # master template
-    ns_ora exec_plsql_bind $db "
+    set template_id [db_exec_plsql master "
       begin
-      :template_id := content_template.new (
+      :1 := content_template.new (
           name          => 'master',
           parent_id     => :templates,
           creation_user => :user_id,
           creation_ip   => :creation_ip
       );
       end;
-    " template_id
+    "]
 
     append html "<li>Created /master, the demo master template."
 
-    template::end_db_transaction
+    }
 }
 
 
@@ -449,29 +443,29 @@ if { $published_templates < 8 } {
 	set revision_id  [content::get_object_id]
 	set tmpfile "$package_root/templates$template.adp"
 	
-	set db [template::begin_db_transaction]
+	db_transaction {
 
-	template::query template_id onevalue "
+	db_1row template_id "
 	  select 
-            content_item.get_id( :template, content_template.get_root_folder )
+            content_item.get_id( :template, content_template.get_root_folder ) as template_id
 	  from 
             dual
-	" -db $db
-    
+	"
+
 	# upload the template
 
 	# this is safe because none of the templates exceeds the max size
 	set adp_text [template::util::read_file $tmpfile]
 
-	template::query index_template onevalue "
+	db_1row index_template "
 	  select
-	    item_id
+	    item_id as index_template
 	  from
 	    cr_items
           where
 	    item_id = content_item.get_id( '/demo_articles/index', 
 	      content_template.get_root_folder )
-	" -db $db
+	"
 
 	if { $template_id == $index_template } {
 	    set mime_type "text/adp"
@@ -479,9 +473,9 @@ if { $published_templates < 8 } {
 	    set mime_type "text/html"
 	}
 
-	ns_ora exec_plsql_bind $db "
+	set revision_id [db_exec_plsql get_revision_id "
 	  begin
-          :revision_id := content_revision.new (
+          :1 := content_revision.new (
               revision_id   => :revision_id,
               item_id       => :template_id,
               title         => 'News Demo Template',
@@ -491,15 +485,15 @@ if { $published_templates < 8 } {
               creation_ip   => :creation_ip
           );
           end;
-	" revision_id
+	"]
 
-	ns_ora dml $db "
+	db_dml update_revision "
 	  update cr_items 
             set live_revision = :revision_id,
             publish_status = 'live'
             where item_id = :template_id"
 
-	template::end_db_transaction
+        }
 
 	# publish the template to the file system and set the live revision
 	set text [content::get_content_value $revision_id]
@@ -538,13 +532,13 @@ if { $published_templates < 8 } {
     set tmpfile "$package_root/templates/demo_articles/index.tcl"
     set tcl_text [template::util::read_file $tmpfile]
 
-    publish::write_multiple_files "/demo_articles/index.tcl" $tcl_text
+    publish::write_multiple_files "[acs_root_dir]/templates/templates/demo_articles/index.tcl" $tcl_text
     append html2 "<li>Copied $path.tcl.<br>"
 
     # publish the index item
-    template::query revision_id onevalue "
+    db_1row get_live_revision "
       select
-        live_revision
+        live_revision as revision_id
       from
         cr_items
       where

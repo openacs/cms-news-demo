@@ -21,4 +21,4 @@ set query "
   order by
     publish_date"
 
-query items multirow $query
+query items items multirow $query

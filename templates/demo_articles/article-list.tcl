@@ -16,7 +16,7 @@ request set_param location_color     -datatype text
 request set_param article_link_color -datatype text
 
 
-template::query articles multirow "
+template::query articles articles multirow "
   select
     live_revision, location, title, name,
     content_item.get_path( i.item_id ) as url
