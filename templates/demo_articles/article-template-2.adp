@@ -8,7 +8,7 @@
   </td>
 </tr>
 <tr>
-  <td valign=top width=65%>
+  <td valign=top width="65%">
     <b><font face="arial" size=5>@title@</font></b><br>
     &nbsp;&nbsp;&nbsp;&nbsp;<font size=-1>by</font> <i>@author@</i>
     <p>

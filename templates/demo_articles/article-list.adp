@@ -3,7 +3,7 @@
   <font size=-1>Published articles by location:</font>
   <p>
 
-  <table cellspacing=0 cellpadding=2 border=0 width=100%>
+  <table cellspacing=0 cellpadding=2 border=0 width="100%">
   <multiple name="articles">
 
     <tr><th align=left>

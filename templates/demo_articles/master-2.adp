@@ -10,7 +10,7 @@
 <table bgcolor="#99CCFF" border=0 cellspacing=0 cellpadding=0>
 <tr>
   <td bgcolor="#FFFFFF" align=right><img src="@static_root@dnn-logo-ball.gif"></td>
-  <td align=center valign=center bgcolor="#99CCFF" width=100%>
+  <td align=center valign=center bgcolor="#99CCFF" width="100%">
     <h1>DNN.com</h1>
   </td>
 </tr>

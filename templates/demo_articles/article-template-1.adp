@@ -3,7 +3,7 @@
 
 <table cellspacing=0 height=100%>
  <tr bgcolor=#ffffff>
-   <td width=65%>
+   <td width="65%">
      <content>
    </td>
    <td>&nbsp;</td>

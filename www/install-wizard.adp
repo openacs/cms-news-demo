@@ -27,7 +27,7 @@
     <formtemplate id="install">
       <table cellspacing=0 cellpadding=4 border=0>
       <tr bgcolor="#6699CC"><td>
-      <table cellspacing=0 cellpadding=8 border=0 width=100%>
+      <table cellspacing=0 cellpadding=8 border=0 width="100%">
       <tr bgcolor="#99CCFF"><td>
 
         CMS News Demo prerequisites check...
