@@ -11,7 +11,7 @@
         <database>oracle</database>
     </database-support>
         <owner url="mailto:pihman@arsdigita.com">Michael Pih</owner>
-        <summary>A demo news site built using CMS.</summary>
+        <summary>News site demo built using CMS.</summary>
         <release-date>2001-02-14</release-date>
         <vendor url="http://www.arsdigita.com/">ArsDigita Corporation</vendor>
         <description format="text/html">A demo news site built using CMS.</description>
